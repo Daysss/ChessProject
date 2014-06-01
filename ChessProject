@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.xml.soap.SAAJResult;
 
-public class CheeseProject extends JApplet {
+public class ChessProject extends JApplet {
 	
 	public JButton[] bt = new JButton[32];// number of darkcheese
 	ImageIcon ic = new ImageIcon("Dark.jpg");// dark image
@@ -21,11 +21,11 @@ public class CheeseProject extends JApplet {
 	int[] black_num = { 1, 2, 2, 2, 2, 2, 5 };
 	int[] red_num = { 1, 2, 2, 2, 2, 2, 5 };
 	Boolean firstHand = false, lastHand = false, nextHand = false;;
-	String tipCheese = " ",lastCheese = " ";
-	String siteCheese = " ";
-	String[] cheese = new String[32];
+	String tipChess = " ",lastChess = " ";
+	String siteChess = " ";
+	String[] chess = new String[32];
 	JButton recBt = null;
-	Boolean[] openVerify=new Boolean[32];//Count the cheese ever be opened
+	Boolean[] openVerify=new Boolean[32];//Count the chess ever be opened
 	public void init() {
 		int width = 400, height = 200;// Size ↓ 50*8,50*4
 		this.setSize(width, height);//大小
@@ -33,21 +33,21 @@ public class CheeseProject extends JApplet {
 		jp.setBackground(new Color(249, 219, 165));
 		jp.setLayout(new GridLayout(4, 8));// row 4 colown 8 /*what is "colown" ? column?*/
 		
-		for(int i = 0; i < openVerify.length; i++)//Initialize cheese's counter ever be opened
+		for(int i = 0; i < openVerify.length; i++)//Initialize chess's counter ever be opened
 			openVerify[i]=false;
 		for (int i = 0; i < bt.length; i++) {//排棋子
 			if ((int) (Math.random() * 2) == 0) {
 				int check = (int) (Math.random() * 7);
 				if (black_num[check] != 0) {
 					black_num[check] -= 1;
-					cheese[i] = "b00" + (check + 1);
+					chess[i] = "b00" + (check + 1);
 				} else
 					i--;
 			} else {
 				int check = (int) (Math.random() * 7);
 				if (red_num[check] != 0) {
 					red_num[check] -= 1;
-					cheese[i] = "r00" + (check + 1);
+					chess[i] = "r00" + (check + 1);
 				} else
 					i--;
 			}
@@ -57,7 +57,7 @@ public class CheeseProject extends JApplet {
 			bt[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));// 設置邊框
 			bt[i].setOpaque(true);
 			bt[i].setIcon(ic);
-			//bt[i].setIcon(new ImageIcon(cheese[i] + ".png"));
+			//bt[i].setIcon(new ImageIcon(chess[i] + ".png"));
 			//bt add action to listen user's action
 			bt[i].addActionListener(new ActionListener() {
 				
@@ -69,49 +69,49 @@ public class CheeseProject extends JApplet {
 						for(int z = 0; z < bt.length; z++){
 							if(tmpBt == bt[z]){
 								nextHand=true;
-	//							if((cheese[z].charAt(0) == 'b' && !firstHand) || cheese[z].charAt(0) == 'b'){
+	//							if((chess[z].charAt(0) == 'b' && !firstHand) || chess[z].charAt(0) == 'b'){
 	//								firstHand = true;
-	//								tipCheese = "b";
-	//							}else if((cheese[z].charAt(0) == 'r' && !firstHand) || cheese[z].charAt(0) == 'r'){
+	//								tipChess = "b";
+	//							}else if((chess[z].charAt(0) == 'r' && !firstHand) || chess[z].charAt(0) == 'r'){
 	//								firstHand = true;
-	//								tipCheese = "r";
+	//								tipChess = "r";
 	//							}
-	//							if(firstHand && openVerify[z] && lastCheese.equals(tipCheese))
+	//							if(firstHand && openVerify[z] && lastChess.equals(tipChess))
 	//								nextHand=false;
 								if(recBt == null && tmpBt == null)
 									nextHand=false;
 								if(nextHand){
-									lastCheese = tipCheese;
-									if(!openVerify[z]){ //determine cheese is cover
+									lastChess = tipChess;
+									if(!openVerify[z]){ //determine chess is cover
 										openVerify[z]=true;
-										bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+										bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
 										recBt = null;
-									}else{ //determine cheese isn't cover
+									}else{ //determine chess isn't cover
 										if(recBt == null )
 											recBt = tmpBt; //record last time button
 										else{
 											for(int y = 0; y<bt.length; y++){
 												if(bt[y] == recBt){
 													if(y/8 == 0)
-														siteCheese = "t";//top
+														siteChess = "t";//top
 													else if(y%8 == 0)
-														siteCheese = "l";//left
+														siteChess = "l";//left
 													else if(y%8 == 7)
-														siteCheese = "r";//right
+														siteChess = "r";//right
 													else if(y/8 == 3)
-														siteCheese = "b";//bottom
+														siteChess = "b";//bottom
 													else
-														siteCheese = "m";//middle
-													if(siteCheese.equals("t")){
+														siteChess = "m";//middle
+													if(siteChess.equals("t")){
 														if(z == y+1 || z == y-1 || z == y+8){
-															if(cheese[z] != null){
-																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
-																	if(cheese[y].charAt(3) != '6'){
-																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
-																			cheese[z] = cheese[y];
-																			cheese[y] = null;
-																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+															if(chess[z] != null){
+																if(chess[y].charAt(0) != chess[z].charAt(0)){
+																	if(chess[y].charAt(3) != '6'){
+																		if(chess[y].charAt(3) <= chess[z].charAt(3)){
+																			chess[z] = chess[y];
+																			chess[y] = null;
+																			bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																			recBt = null;
 																		}
 																	}else{
@@ -119,23 +119,23 @@ public class CheeseProject extends JApplet {
 																	}
 																}
 															}else{
-																cheese[z] = cheese[y];
-																cheese[y] = null;
-																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																chess[z] = chess[y];
+																chess[y] = null;
+																bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																recBt = null;
 															}
 														}
-													}else if(siteCheese.equals("l")){
+													}else if(siteChess.equals("l")){
 														if(z == y+1 || z == y+8 || z == y-8){
-															if(cheese[z] != null){
-																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
-																	if(cheese[y].charAt(3) != '6'){
-																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
-																			cheese[z] = cheese[y];
-																			cheese[y] = null;
-																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+															if(chess[z] != null){
+																if(chess[y].charAt(0) != chess[z].charAt(0)){
+																	if(chess[y].charAt(3) != '6'){
+																		if(chess[y].charAt(3) <= chess[z].charAt(3)){
+																			chess[z] = chess[y];
+																			chess[y] = null;
+																			bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																			recBt = null;
 																		}
 																	}else{
@@ -143,23 +143,23 @@ public class CheeseProject extends JApplet {
 																	}
 																}
 															}else{
-																cheese[z] = cheese[y];
-																cheese[y] = null;
-																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																chess[z] = chess[y];
+																chess[y] = null;
+																bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																recBt = null;
 															}
 														}
-													}else if(siteCheese.equals("r")){
+													}else if(siteChess.equals("r")){
 														if(z == y-1 || z == y+8 || z == y-8){
-															if(cheese[z] != null){
-																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
-																	if(cheese[y].charAt(3) != '6'){
-																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
-																			cheese[z] = cheese[y];
-																			cheese[y] = null;
-																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+															if(chess[z] != null){
+																if(chess[y].charAt(0) != chess[z].charAt(0)){
+																	if(chess[y].charAt(3) != '6'){
+																		if(chess[y].charAt(3) <= chess[z].charAt(3)){
+																			chess[z] = chess[y];
+																			chess[y] = null;
+																			bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																			recBt = null;
 																		}
 																	}else{
@@ -167,23 +167,23 @@ public class CheeseProject extends JApplet {
 																	}
 																}
 															}else{
-																cheese[z] = cheese[y];
-																cheese[y] = null;
-																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																chess[z] = chess[y];
+																chess[y] = null;
+																bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																recBt = null;
 															}
 														}
-													}else if(siteCheese.equals("b")){
+													}else if(siteChess.equals("b")){
 														if(z == y+1 || z == y-1 || z == y-8){
-															if(cheese[z] != null){
-																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
-																	if(cheese[y].charAt(3) != '6'){
-																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
-																			cheese[z] = cheese[y];
-																			cheese[y] = null;
-																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+															if(chess[z] != null){
+																if(chess[y].charAt(0) != chess[z].charAt(0)){
+																	if(chess[y].charAt(3) != '6'){
+																		if(chess[y].charAt(3) <= chess[z].charAt(3)){
+																			chess[z] = chess[y];
+																			chess[y] = null;
+																			bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																			recBt = null;
 																		}
 																	}else{
@@ -191,23 +191,23 @@ public class CheeseProject extends JApplet {
 																	}
 																}
 															}else{
-																cheese[z] = cheese[y];
-																cheese[y] = null;
-																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																chess[z] = chess[y];
+																chess[y] = null;
+																bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																recBt = null;
 															}
 														}
-													}else if(siteCheese.equals("m")){
+													}else if(siteChess.equals("m")){
 														if(z == y+1 || z == y-1 || z == y+8 || z == y-8){
-															if(cheese[z] != null){
-																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
-																	if(cheese[y].charAt(3) != '6'){
-																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
-																			cheese[z] = cheese[y];
-																			cheese[y] = null;
-																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+															if(chess[z] != null){
+																if(chess[y].charAt(0) != chess[z].charAt(0)){
+																	if(chess[y].charAt(3) != '6'){
+																		if(chess[y].charAt(3) <= chess[z].charAt(3)){
+																			chess[z] = chess[y];
+																			chess[y] = null;
+																			bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																			recBt = null;
 																		}
 																	}else{
@@ -215,10 +215,10 @@ public class CheeseProject extends JApplet {
 																	}
 																}
 															}else{
-																cheese[z] = cheese[y];
-																cheese[y] = null;
-																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
-																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																chess[z] = chess[y];
+																chess[y] = null;
+																bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(chess[y] + ".png"));
 																recBt = null;
 															}
 														}
