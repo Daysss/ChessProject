@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -10,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.xml.soap.SAAJResult;
 
-public class darkcheese extends JApplet {
+public class CheeseProject extends JApplet {
 	public JButton[] bt = new JButton[32];// number of darkcheese
 	ImageIcon ic = new ImageIcon("Dark.jpg");// dark image
 	String[] black = new String[16];
@@ -24,7 +26,7 @@ public class darkcheese extends JApplet {
 		this.setSize(width, height);//大小
 		JPanel jp = new JPanel();
 		jp.setBackground(new Color(249, 219, 165));
-		jp.setLayout(new GridLayout(4, 8));// row 4 colown 8
+		jp.setLayout(new GridLayout(4, 8));// row 4 colown 8 /*what is "colown" ? column?*/
 		for (int i = 0; i < bt.length; i++) {//排棋子
 			if ((int) (Math.random() * 2) == 0) {
 				int check = (int) (Math.random() * 7);
@@ -47,9 +49,21 @@ public class darkcheese extends JApplet {
 			bt[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));// 設置邊框
 			bt[i].setOpaque(true);
 			bt[i].setIcon(new ImageIcon(cheese[i] + ".png"));
+			
+			bt[i].addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
 			jp.add(bt[i]);
 		}
 		this.add(jp);
 
 	}
 }
+
+
