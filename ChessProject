@@ -1,0 +1,55 @@
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Image;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.xml.soap.SAAJResult;
+
+public class ChessProject extends JApplet {
+public JButton[] bt = new JButton[32];// number of darkcheese
+ImageIcon ic = new ImageIcon("Dark.jpg");// dark image
+String[] black = new String[16];
+String[] red = new String[16];
+int[] black_num = { 1, 2, 2, 2, 2, 2, 5 };
+int[] red_num = { 1, 2, 2, 2, 2, 2, 5 };
+int b_count = 0, r_count = 0;
+String[] cheese = new String[32];
+public void init() {
+int width = 400, height = 200;// Size ↓ 50*8,50*4
+this.setSize(width, height);//大小
+JPanel jp = new JPanel();
+jp.setBackground(new Color(249, 219, 165));
+jp.setLayout(new GridLayout(4, 8));// row 4 colown 8
+for (int i = 0; i < bt.length; i++) {//排棋子
+if ((int) (Math.random() * 2) == 0) {
+int check = (int) (Math.random() * 7);
+if (black_num[check] != 0) {
+black_num[check] -= 1;
+cheese[i] = "b00" + (check + 1);
+} else
+i--;
+} else {
+int check = (int) (Math.random() * 7);
+if (red_num[check] != 0) {
+red_num[check] -= 1;
+cheese[i] = "r00" + (check + 1);
+} else
+i--;
+}
+}
+for (int i = 0; i < 32; i++) {//加入Icon
+bt[i] = new JButton();
+bt[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));// 設置邊框
+bt[i].setOpaque(true);
+bt[i].setIcon(new ImageIcon(cheese[i] + ".png"));
+jp.add(bt[i]);
+}
+this.add(jp);
+
+}
+}
