@@ -13,20 +13,28 @@ import javax.swing.JPanel;
 import javax.xml.soap.SAAJResult;
 
 public class CheeseProject extends JApplet {
+	
 	public JButton[] bt = new JButton[32];// number of darkcheese
 	ImageIcon ic = new ImageIcon("Dark.jpg");// dark image
 	String[] black = new String[16];
 	String[] red = new String[16];
 	int[] black_num = { 1, 2, 2, 2, 2, 2, 5 };
 	int[] red_num = { 1, 2, 2, 2, 2, 2, 5 };
-	int b_count = 0, r_count = 0;
+	Boolean firstHand = false, lastHand = false, nextHand = false;;
+	String tipCheese = " ",lastCheese = " ";
+	String siteCheese = " ";
 	String[] cheese = new String[32];
+	JButton recBt = null;
+	Boolean[] openVerify=new Boolean[32];//Count the cheese ever be opened
 	public void init() {
 		int width = 400, height = 200;// Size ↓ 50*8,50*4
 		this.setSize(width, height);//大小
 		JPanel jp = new JPanel();
 		jp.setBackground(new Color(249, 219, 165));
 		jp.setLayout(new GridLayout(4, 8));// row 4 colown 8 /*what is "colown" ? column?*/
+		
+		for(int i = 0; i < openVerify.length; i++)//Initialize cheese's counter ever be opened
+			openVerify[i]=false;
 		for (int i = 0; i < bt.length; i++) {//排棋子
 			if ((int) (Math.random() * 2) == 0) {
 				int check = (int) (Math.random() * 7);
@@ -44,26 +52,191 @@ public class CheeseProject extends JApplet {
 					i--;
 			}
 		}
-		for (int i = 0; i < 32; i++) {//加入Icon
+		for ( int i = 0; i < 32; i++) {//加入Icon
 			bt[i] = new JButton();
 			bt[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));// 設置邊框
 			bt[i].setOpaque(true);
-			bt[i].setIcon(new ImageIcon(cheese[i] + ".png"));
-			
+			bt[i].setIcon(ic);
+			//bt[i].setIcon(new ImageIcon(cheese[i] + ".png"));
+			//bt add action to listen user's action
 			bt[i].addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					
+					JButton tmpBt = (JButton) e.getSource(); //getting press which button
+					try{
+						for(int z = 0; z < bt.length; z++){
+							if(tmpBt == bt[z]){
+								nextHand=true;
+	//							if((cheese[z].charAt(0) == 'b' && !firstHand) || cheese[z].charAt(0) == 'b'){
+	//								firstHand = true;
+	//								tipCheese = "b";
+	//							}else if((cheese[z].charAt(0) == 'r' && !firstHand) || cheese[z].charAt(0) == 'r'){
+	//								firstHand = true;
+	//								tipCheese = "r";
+	//							}
+	//							if(firstHand && openVerify[z] && lastCheese.equals(tipCheese))
+	//								nextHand=false;
+								if(recBt == null && tmpBt == null)
+									nextHand=false;
+								if(nextHand){
+									lastCheese = tipCheese;
+									if(!openVerify[z]){ //determine cheese is cover
+										openVerify[z]=true;
+										bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+										recBt = null;
+									}else{ //determine cheese isn't cover
+										if(recBt == null )
+											recBt = tmpBt; //record last time button
+										else{
+											for(int y = 0; y<bt.length; y++){
+												if(bt[y] == recBt){
+													if(y/8 == 0)
+														siteCheese = "t";//top
+													else if(y%8 == 0)
+														siteCheese = "l";//left
+													else if(y%8 == 7)
+														siteCheese = "r";//right
+													else if(y/8 == 3)
+														siteCheese = "b";//bottom
+													else
+														siteCheese = "m";//middle
+													if(siteCheese.equals("t")){
+														if(z == y+1 || z == y-1 || z == y+8){
+															if(cheese[z] != null){
+																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
+																	if(cheese[y].charAt(3) != '6'){
+																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
+																			cheese[z] = cheese[y];
+																			cheese[y] = null;
+																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																			recBt = null;
+																		}
+																	}else{
+																		
+																	}
+																}
+															}else{
+																cheese[z] = cheese[y];
+																cheese[y] = null;
+																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																recBt = null;
+															}
+														}
+													}else if(siteCheese.equals("l")){
+														if(z == y+1 || z == y+8 || z == y-8){
+															if(cheese[z] != null){
+																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
+																	if(cheese[y].charAt(3) != '6'){
+																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
+																			cheese[z] = cheese[y];
+																			cheese[y] = null;
+																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																			recBt = null;
+																		}
+																	}else{
+																		
+																	}
+																}
+															}else{
+																cheese[z] = cheese[y];
+																cheese[y] = null;
+																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																recBt = null;
+															}
+														}
+													}else if(siteCheese.equals("r")){
+														if(z == y-1 || z == y+8 || z == y-8){
+															if(cheese[z] != null){
+																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
+																	if(cheese[y].charAt(3) != '6'){
+																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
+																			cheese[z] = cheese[y];
+																			cheese[y] = null;
+																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																			recBt = null;
+																		}
+																	}else{
+																		
+																	}
+																}
+															}else{
+																cheese[z] = cheese[y];
+																cheese[y] = null;
+																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																recBt = null;
+															}
+														}
+													}else if(siteCheese.equals("b")){
+														if(z == y+1 || z == y-1 || z == y-8){
+															if(cheese[z] != null){
+																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
+																	if(cheese[y].charAt(3) != '6'){
+																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
+																			cheese[z] = cheese[y];
+																			cheese[y] = null;
+																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																			recBt = null;
+																		}
+																	}else{
+																		
+																	}
+																}
+															}else{
+																cheese[z] = cheese[y];
+																cheese[y] = null;
+																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																recBt = null;
+															}
+														}
+													}else if(siteCheese.equals("m")){
+														if(z == y+1 || z == y-1 || z == y+8 || z == y-8){
+															if(cheese[z] != null){
+																if(cheese[y].charAt(0) != cheese[z].charAt(0)){
+																	if(cheese[y].charAt(3) != '6'){
+																		if(cheese[y].charAt(3) <= cheese[z].charAt(3)){
+																			cheese[z] = cheese[y];
+																			cheese[y] = null;
+																			bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																			bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																			recBt = null;
+																		}
+																	}else{
+																		
+																	}
+																}
+															}else{
+																cheese[z] = cheese[y];
+																cheese[y] = null;
+																bt[z].setIcon(new ImageIcon(cheese[z] + ".png"));
+																bt[y].setIcon(new ImageIcon(cheese[y] + ".png"));
+																recBt = null;
+															}
+														}
+													}												
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}catch(Exception ex){
+						//e.printStackTrace();
+					}
 				}
 			});
-			
 			jp.add(bt[i]);
 		}
 		this.add(jp);
-
 	}
 }
-
-
