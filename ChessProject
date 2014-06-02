@@ -26,7 +26,6 @@ public class ChessProject extends JApplet {
 	String[] chess = new String[32];
 	JButton recBt = null;
 	int recSite;
-	int siteN = -111, siteS = -111, siteW = -111, siteE = -111;
 	Boolean[] openVerify=new Boolean[32];//Count the chess ever be opened
 	public void init() {
 		int width = 400, height = 200;// Size ↓ 50*8,50*4
@@ -93,7 +92,6 @@ public class ChessProject extends JApplet {
 											recBt = tmpBt; //record last time button
 											recSite = tmpSite ;
 										}else if(recBt != null){
-											siteN = siteS = siteW = siteE = -111;
 											if(recSite/8 == 0)//top
 												siteChess = "t";
 											else if(recSite%8 == 0)//left
