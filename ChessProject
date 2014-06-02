@@ -67,28 +67,28 @@ public class ChessProject extends JApplet {
 					// TODO Auto-generated method stub
 					JButton tmpBt = (JButton) e.getSource(); //getting press which button
 					try{
-						for(int z = 0; z < bt.length; z++){
-							if(tmpBt == bt[z]){
+						for(int tmpSite = 0; tmpSite < bt.length; tmpSite++){
+							if(tmpBt == bt[tmpSite]){
 								nextHand=true;
-	//							if((chess[z].charAt(0) == 'b' && !firstHand) || chess[z].charAt(0) == 'b'){
+	//							if((chess[tmpSite].charAt(0) == 'b' && !firstHand) || chess[tmpSite].charAt(0) == 'b'){
 	//								firstHand = true;
 	//								tipChess = "b";
-	//							}else if((chess[z].charAt(0) == 'r' && !firstHand) || chess[z].charAt(0) == 'r'){
+	//							}else if((chess[tmpSite].charAt(0) == 'r' && !firstHand) || chess[tmpSite].charAt(0) == 'r'){
 	//								firstHand = true;
 	//								tipChess = "r";
 	//							}
-	//							if(firstHand && openVerify[z] && lastChess.equals(tipChess))
+	//							if(firstHand && openVerify[tmpSite] && lastChess.equals(tipChess))
 	//								nextHand=false;
 								if(recBt == null && tmpBt == null)
 									nextHand=false;
 								if(nextHand){
 									lastChess = tipChess;
-									if(!openVerify[z]){ //determine chess is cover
-										openVerify[z]=true;
-										bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+									if(!openVerify[tmpSite]){ //determine chess is cover
+										openVerify[tmpSite]=true;
+										bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 										recBt = null;
-									}else if(openVerify[z]){ //determine chess isn't cover
-										if(recBt == null && chess[z]!=null){
+									}else if(openVerify[tmpSite]){ //determine chess isn't cover
+										if(recBt == null && chess[tmpSite]!=null){
 											recBt = tmpBt; //record last time button
 											for(recCount = 0; recCount<bt.length; recCount++){
 												if(recBt == bt[recCount])
@@ -106,206 +106,206 @@ public class ChessProject extends JApplet {
 											else
 												siteChess = "m";//middle
 											if(siteChess.equals("t")){
-												if(z == recCount+1 || z == recCount-1 || z == recCount+8){
-													if(chess[z] != null){
-														if(chess[recCount].charAt(0) != chess[z].charAt(0)){
+												if(tmpSite == recCount+1 || tmpSite == recCount-1 || tmpSite == recCount+8){
+													if(chess[tmpSite] != null){
+														if(chess[recCount].charAt(0) != chess[tmpSite].charAt(0)){
 															if(chess[recCount].charAt(3) == '7'){
-																if(chess[z].charAt(3) == '1' || chess[z].charAt(3) == '6' || chess[z].charAt(3) == '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) == '1' || chess[tmpSite].charAt(3) == '6' || chess[tmpSite].charAt(3) == '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else if(chess[recCount].charAt(3) == '6'){
 																
 															}else if(chess[recCount].charAt(3) == '1'){
-																if(chess[z].charAt(3) != '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) != '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else {
-																if(chess[recCount].charAt(3) <= chess[z].charAt(3)){
-																	chess[z] = chess[recCount];
+																if(chess[recCount].charAt(3) <= chess[tmpSite].charAt(3)){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
-																}else if(chess[recCount].charAt(3) > chess[z].charAt(3))
+																}else if(chess[recCount].charAt(3) > chess[tmpSite].charAt(3))
 																	recBt = null;
 															}
 														}
-													}else if(chess[z] == null){
-														chess[z] = chess[recCount];
+													}else if(chess[tmpSite] == null){
+														chess[tmpSite] = chess[recCount];
 														chess[recCount] = null;
-														bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+														bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 														bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 														recBt = null;
 													}
 												}
 											}else if(siteChess.equals("l")){
-												if(z == recCount+1 || z == recCount+8 || z == recCount-8){
-													if(chess[z] != null){
-														if(chess[recCount].charAt(0) != chess[z].charAt(0)){
+												if(tmpSite == recCount+1 || tmpSite == recCount+8 || tmpSite == recCount-8){
+													if(chess[tmpSite] != null){
+														if(chess[recCount].charAt(0) != chess[tmpSite].charAt(0)){
 															if(chess[recCount].charAt(3) == '7'){
-																if(chess[z].charAt(3) == '1' || chess[z].charAt(3) == '6' || chess[z].charAt(3) == '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) == '1' || chess[tmpSite].charAt(3) == '6' || chess[tmpSite].charAt(3) == '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else if(chess[recCount].charAt(3) == '6'){
 																
 															}else if(chess[recCount].charAt(3) == '1'){
-																if(chess[z].charAt(3) != '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) != '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else {
-																if(chess[recCount].charAt(3) <= chess[z].charAt(3)){
-																	chess[z] = chess[recCount];
+																if(chess[recCount].charAt(3) <= chess[tmpSite].charAt(3)){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
-																}else if(chess[recCount].charAt(3) > chess[z].charAt(3))
+																}else if(chess[recCount].charAt(3) > chess[tmpSite].charAt(3))
 																	recBt = null;
 															}
 														}
-													}else if(chess[z] == null){
-														chess[z] = chess[recCount];
+													}else if(chess[tmpSite] == null){
+														chess[tmpSite] = chess[recCount];
 														chess[recCount] = null;
-														bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+														bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 														bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 														recBt = null;
 													}
 												}
 											}else if(siteChess.equals("r")){
-												if(z == recCount-1 || z == recCount+8 || z == recCount-8){
-													if(chess[z] != null){
-														if(chess[recCount].charAt(0) != chess[z].charAt(0)){
+												if(tmpSite == recCount-1 || tmpSite == recCount+8 || tmpSite == recCount-8){
+													if(chess[tmpSite] != null){
+														if(chess[recCount].charAt(0) != chess[tmpSite].charAt(0)){
 															if(chess[recCount].charAt(3) == '7'){
-																if(chess[z].charAt(3) == '1' || chess[z].charAt(3) == '6' || chess[z].charAt(3) == '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) == '1' || chess[tmpSite].charAt(3) == '6' || chess[tmpSite].charAt(3) == '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else if(chess[recCount].charAt(3) == '6'){
 																
 															}else if(chess[recCount].charAt(3) == '1'){
-																if(chess[z].charAt(3) != '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) != '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else {
-																if(chess[recCount].charAt(3) <= chess[z].charAt(3)){
-																	chess[z] = chess[recCount];
+																if(chess[recCount].charAt(3) <= chess[tmpSite].charAt(3)){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
-																}else if(chess[recCount].charAt(3) > chess[z].charAt(3))
+																}else if(chess[recCount].charAt(3) > chess[tmpSite].charAt(3))
 																	recBt = null;
 															}
 														}
-													}else if(chess[z] == null){
-														chess[z] = chess[recCount];
+													}else if(chess[tmpSite] == null){
+														chess[tmpSite] = chess[recCount];
 														chess[recCount] = null;
-														bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+														bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 														bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 														recBt = null;
 													}
 												}
 											}else if(siteChess.equals("b")){
-												if(z == recCount+1 || z == recCount-1 || z == recCount-8){
-													if(chess[z] != null){
-														if(chess[recCount].charAt(0) != chess[z].charAt(0)){
+												if(tmpSite == recCount+1 || tmpSite == recCount-1 || tmpSite == recCount-8){
+													if(chess[tmpSite] != null){
+														if(chess[recCount].charAt(0) != chess[tmpSite].charAt(0)){
 															if(chess[recCount].charAt(3) == '7'){
-																if(chess[z].charAt(3) == '1' || chess[z].charAt(3) == '6' || chess[z].charAt(3) == '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) == '1' || chess[tmpSite].charAt(3) == '6' || chess[tmpSite].charAt(3) == '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else if(chess[recCount].charAt(3) == '6'){
 																
 															}else if(chess[recCount].charAt(3) == '1'){
-																if(chess[z].charAt(3) != '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) != '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else {
-																if(chess[recCount].charAt(3) <= chess[z].charAt(3)){
-																	chess[z] = chess[recCount];
+																if(chess[recCount].charAt(3) <= chess[tmpSite].charAt(3)){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
-																}else if(chess[recCount].charAt(3) > chess[z].charAt(3))
+																}else if(chess[recCount].charAt(3) > chess[tmpSite].charAt(3))
 																	recBt = null;
 															}
 														}
-													}else if(chess[z] == null){
-														chess[z] = chess[recCount];
+													}else if(chess[tmpSite] == null){
+														chess[tmpSite] = chess[recCount];
 														chess[recCount] = null;
-														bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+														bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 														bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 														recBt = null;
 													}
 												}
 											}else if(siteChess.equals("m")){
-												if(z == recCount+1 || z == recCount-1 || z == recCount+8 || z == recCount-8){
-													if(chess[z] != null){
-														if(chess[recCount].charAt(0) != chess[z].charAt(0)){
+												if(tmpSite == recCount+1 || tmpSite == recCount-1 || tmpSite == recCount+8 || tmpSite == recCount-8){
+													if(chess[tmpSite] != null){
+														if(chess[recCount].charAt(0) != chess[tmpSite].charAt(0)){
 															if(chess[recCount].charAt(3) == '7'){
-																if(chess[z].charAt(3) == '1' || chess[z].charAt(3) == '6' || chess[z].charAt(3) == '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) == '1' || chess[tmpSite].charAt(3) == '6' || chess[tmpSite].charAt(3) == '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else if(chess[recCount].charAt(3) == '6'){
 																
 															}else if(chess[recCount].charAt(3) == '1'){
-																if(chess[z].charAt(3) != '7'){
-																	chess[z] = chess[recCount];
+																if(chess[tmpSite].charAt(3) != '7'){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
 																}
 															}else {
-																if(chess[recCount].charAt(3) <= chess[z].charAt(3)){
-																	chess[z] = chess[recCount];
+																if(chess[recCount].charAt(3) <= chess[tmpSite].charAt(3)){
+																	chess[tmpSite] = chess[recCount];
 																	chess[recCount] = null;
-																	bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+																	bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 																	bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 																	recBt = null;
-																}else if(chess[recCount].charAt(3) > chess[z].charAt(3))
+																}else if(chess[recCount].charAt(3) > chess[tmpSite].charAt(3))
 																	recBt = null;
 															}
 														}
-													}else if(chess[z] == null){
-														chess[z] = chess[recCount];
+													}else if(chess[tmpSite] == null){
+														chess[tmpSite] = chess[recCount];
 														chess[recCount] = null;
-														bt[z].setIcon(new ImageIcon(chess[z] + ".png"));
+														bt[tmpSite].setIcon(new ImageIcon(chess[tmpSite] + ".png"));
 														bt[recCount].setIcon(new ImageIcon(chess[recCount] + ".png"));
 														recBt = null;
 													}
