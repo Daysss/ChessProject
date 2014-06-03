@@ -21,7 +21,7 @@ public class ChessProject extends JApplet {
 	int[] black_num = { 1, 2, 2, 2, 2, 2, 5 };
 	int[] red_num = { 1, 2, 2, 2, 2, 2, 5 };
 	Boolean firstHand = false, lastHand = false, nextHand = false;;
-	String tipChess = " ",lastChess = " ";
+	String lastChess = " ";
 	String siteChess = " ";
 	String[] chess = new String[32];
 	JButton recBt = null;
@@ -71,17 +71,19 @@ public class ChessProject extends JApplet {
 						for(int tmpSite = 0; tmpSite < bt.length; tmpSite++){
 							if(tmpBt == bt[tmpSite]){
 								nextHand=true;
-	//							if((chess[tmpSite].charAt(0) == 'b' && !firstHand) || chess[tmpSite].charAt(0) == 'b'){
-	//								firstHand = true;
-	//								tipChess = "b";
-	//							}else if((chess[tmpSite].charAt(0) == 'r' && !firstHand) || chess[tmpSite].charAt(0) == 'r'){
-	//								firstHand = true;
-	//								tipChess = "r";
-	//							}
-	//							if(firstHand && openVerify[tmpSite] && lastChess.equals(tipChess))
-	//								nextHand=false;
-								if(recBt == null && tmpBt == null)
+//								if((chess[tmpSite].charAt(0) == 'b' && !firstHand) || ((chess[tmpSite].charAt(0) == 'b' || !openVerify[tmpSite] ) && lastChess.equals("r"))){
+//									firstHand = true;
+//									lastChess = "b";
+//								}else if((chess[tmpSite].charAt(0) == 'r' && !firstHand) || ((chess[tmpSite].charAt(0) == 'r' || !openVerify[tmpSite] ) && lastChess.equals("b"))){
+//									firstHand = true;
+//									lastChess = "r";
+//								}
+//								if(firstHand && openVerify[tmpSite] && (chess[tmpSite].charAt(0) == lastChess.charAt(0)))
+//									nextHand=false;
+								if(chess[recSite] == null && chess[tmpSite] == null){
 									nextHand=false;
+									recBt = null;
+								}
 								if(nextHand){
 									if(!openVerify[tmpSite]){ //determine chess is cover
 										openVerify[tmpSite]=true;
@@ -109,12 +111,26 @@ public class ChessProject extends JApplet {
 															if(chess[tmpSite].charAt(3) == '1' || chess[tmpSite].charAt(3) == '7')
 																moveVerify = true;										
 														}else if(chess[recSite].charAt(3) == '6'){
-															if(recSite > tmpSite){
-																if(((recSite-tmpSite)/8 == 0) || ((recSite-tmpSite)%8 == 0))
-																	moveVerify = true;
-															}else if(recSite < tmpSite){
-																if(((tmpSite-recSite)/8 == 0) || ((tmpSite-recSite)%8 == 0))
-																	moveVerify = true;
+															if(recSite/8 == tmpSite/8){
+																if(recSite > tmpSite){
+																	for(int tmpValue = recSite-1; tmpValue > tmpSite; tmpValue--)
+																		if(chess[tmpValue] != null)
+																			moveVerify = true;
+																}else if(recSite < tmpSite){
+																	for(int tmpValue = recSite+1; tmpValue > tmpSite; tmpValue++)
+																		if(chess[tmpValue] != null)
+																			moveVerify = true;
+																}
+															}else if(recSite%8 == tmpSite%8){
+																if(recSite > tmpSite){
+																	for(int tmpValue = recSite-8; tmpValue > tmpSite; tmpValue-=8)
+																		if(chess[tmpValue] != null)
+																			moveVerify = true;
+																}else if(recSite < tmpSite){
+																	for(int tmpValue = recSite+8; tmpValue > tmpSite; tmpValue+=8)
+																		if(chess[tmpValue] != null)
+																			moveVerify = true;
+																}
 															}
 														}else if(chess[recSite].charAt(3) == '1'){
 															if(chess[tmpSite].charAt(3) != '7')
