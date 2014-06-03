@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.xml.soap.SAAJResult;
 
-public class Ts extends JApplet {
+public class ChessProject extends JApplet {
 	
 	public JButton[] bt = new JButton[32];// number of darkcheese
 	ImageIcon ic = new ImageIcon("Dark.jpg");// dark image
