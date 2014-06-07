@@ -1,0 +1,162 @@
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.xml.soap.SAAJResult;
+
+public class ChessProject extends JApplet {
+	
+	public JButton[][] bt = new JButton[4][8];// number of darkcheese
+	ImageIcon ic = new ImageIcon("Dark.jpg");// dark image
+	String[] black = new String[16];
+	String[] red = new String[16];
+	int[] black_num = { 1, 2, 2, 2, 2, 2, 5 };
+	int[] red_num = { 1, 2, 2, 2, 2, 2, 5 };
+	Boolean firstHand = false, lastHand = false, nextHand = false;;
+	String lastChess = " ";
+	String siteChess = " ";
+	String[][] chess = new String[4][8];
+	JButton recBt = null;
+	int recSiteR,recSiteC;
+	Boolean[][] openVerify=new Boolean[4][8];//Count the chess ever be opened
+	Boolean moveVerify = false;
+	public void init() {
+		int width = 400, height = 200;// Size ↓ 50*8,50*4
+		this.setSize(width, height);//大小
+		JPanel jp = new JPanel();
+		jp.setBackground(new Color(249, 219, 165));
+		jp.setLayout(new GridLayout(4, 8));// row 4 colown 8 /*what is "colown" ? column?*/
+		
+		for(int i = 0; i < openVerify.length; i++){//Initialize chess's counter ever be opened
+			for(int j = 0; j < openVerify[i].length; j++)
+				openVerify[i][j]=false;
+		}
+		for (int i = 0; i < bt.length; i++) {//排棋子
+			for(int j = 0; j < bt[i].length; j++){
+				if ((int) (Math.random() * 2) == 0) {
+					int check = (int) (Math.random() * 7);
+					if (black_num[check] != 0) {
+						black_num[check] -= 1;
+						chess[i][j] = "b00" + (check + 1);
+					} else
+						j--;
+				} else {
+					int check = (int) (Math.random() * 7);
+					if (red_num[check] != 0) {
+						red_num[check] -= 1;
+						chess[i][j] = "r00" + (check + 1);
+					} else
+						j--;
+				}
+			}
+		}
+		for ( int i = 0; i < bt.length; i++) {//加入Icon
+			for(int j = 0; j < bt[i].length; j++){
+				bt[i][j] = new JButton();
+				bt[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));// 設置邊框
+				bt[i][j].setOpaque(true);
+				bt[i][j].setIcon(ic);
+				//bt[i].setIcon(new ImageIcon(chess[i] + ".png"));
+				//bt add action to listen user's action
+				bt[i][j].addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						JButton tmpBt = (JButton) e.getSource(); //getting press which button
+						try{
+							for(int tmpSiteR = 0; tmpSiteR < bt.length; tmpSiteR++){
+								for(int tmpSiteC = 0; tmpSiteC < bt[tmpSiteR].length; tmpSiteC++){
+									if(tmpBt == bt[tmpSiteR][tmpSiteC]){
+										nextHand=true;
+		//								if((chess[tmpSite].charAt(0) == 'b' && !firstHand) || ((chess[tmpSite].charAt(0) == 'b' || !openVerify[tmpSite] ) && lastChess.equals("r"))){
+		//									firstHand = true;
+		//									lastChess = "b";
+		//								}else if((chess[tmpSite].charAt(0) == 'r' && !firstHand) || ((chess[tmpSite].charAt(0) == 'r' || !openVerify[tmpSite] ) && lastChess.equals("b"))){
+		//									firstHand = true;
+		//									lastChess = "r";
+		//								}
+		//								if(firstHand && openVerify[tmpSite] && (chess[tmpSite].charAt(0) == lastChess.charAt(0)))
+		//									nextHand=false;
+										if(chess[recSiteR][recSiteC] == null && chess[tmpSiteR][tmpSiteC] == null){
+											nextHand=false;
+											recBt = null;
+											tmpBt = null;
+										}
+										if(nextHand){
+											if(!openVerify[tmpSiteR][tmpSiteC]){ //determine chess is cover
+												openVerify[tmpSiteR][tmpSiteC]=true;
+												bt[tmpSiteR][tmpSiteC].setIcon(new ImageIcon(chess[tmpSiteR][tmpSiteC] + ".png"));
+												recBt = null;
+											}else if(openVerify[tmpSiteR][tmpSiteC]){ //determine chess isn't cover
+												if( (recBt == null && chess[tmpSiteR][tmpSiteC] != null) /*transfer moving same color of chess*/ /*||  (chess[tmpSite].equals(chess[recSite]))*/ ){
+													recBt = tmpBt; //record last time button
+													recSiteR = tmpSiteR;
+													recSiteC = tmpSiteC;
+												}else if(recBt != null){
+													if( ( (tmpSiteR == recSiteR) && ((tmpSiteC == recSiteC-1) || (tmpSiteC == recSiteC+1)) ) ||
+															( (tmpSiteC == recSiteC) && ((tmpSiteR == recSiteR-1) || (tmpSiteR == recSiteR+1)))){
+														if(chess[tmpSiteR][tmpSiteC] != null){
+															if(chess[recSiteR][recSiteC].charAt(0) != chess[recSiteR][recSiteC].charAt(0)){
+																if(chess[recSiteR][recSiteC].charAt(3) == '7'){
+																	if(chess[recSiteR][recSiteC].charAt(3) == '1' || chess[recSiteR][recSiteC].charAt(3) == '7' /*about chess 7 */)
+																		moveVerify = true;										
+																}else if(chess[recSiteR][recSiteC].charAt(3) == '1' /*about chess 1 */){
+																	if(chess[recSiteR][recSiteC].charAt(3) != '7')
+																		moveVerify = true;
+																}else {
+																	if(chess[recSiteR][recSiteC].charAt(3) <= chess[recSiteR][recSiteC].charAt(3)){
+																		moveVerify = true;
+																	}else if(chess[recSiteR][recSiteC].charAt(3) > chess[recSiteR][recSiteC].charAt(3)){
+																		recBt = tmpBt;
+																		recSiteR = tmpSiteR;
+																		recSiteC = tmpSiteC;
+																	}
+																}
+															}
+														}else if( chess[tmpSiteR][tmpSiteC] == null )
+															moveVerify = true;
+													}
+												}
+												if(chess[recSiteR][recSiteC].charAt(3) == '6' /*about chess 6 */){
+//													if(recSite/8 != tmpSite/8)
+//														moveVerify = false;
+//													else if(recSite%8 == tmpSite%8)
+//														moveVerify = false;
+												}
+												if(moveVerify){
+													chess[tmpSiteR][tmpSiteC] = chess[recSiteR][recSiteC];
+													chess[recSiteR][recSiteC] = null;
+													bt[tmpSiteR][tmpSiteC].setIcon(new ImageIcon(chess[tmpSiteR][tmpSiteC] + ".png"));
+													bt[recSiteR][recSiteC].setIcon(new ImageIcon(chess[recSiteR][recSiteC] + ".png"));
+													recBt = null;
+													moveVerify = false;
+												}else if(!moveVerify){
+													recBt = tmpBt;
+													recSiteR = tmpSiteR;
+													recSiteC = tmpSiteC;
+												}
+											}
+										}
+									}
+								}
+							}
+						}catch(Exception ex){
+							//e.printStackTrace();
+						}
+					}
+				});
+				jp.add(bt[i][j]);
+			}
+		}
+		this.add(jp);
+	}
+}
