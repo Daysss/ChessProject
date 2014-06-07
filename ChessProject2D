@@ -22,7 +22,6 @@ public class ChessProject extends JApplet {
 	int[] red_num = { 1, 2, 2, 2, 2, 2, 5 };
 	Boolean firstHand = false, lastHand = false, nextHand = false;;
 	String lastChess = " ";
-	String siteChess = " ";
 	String[][] chess = new String[4][8];
 	JButton recBt = null;
 	int recSiteR,recSiteC;
@@ -102,35 +101,77 @@ public class ChessProject extends JApplet {
 													recSiteR = tmpSiteR;
 													recSiteC = tmpSiteC;
 												}else if(recBt != null){
-													if( ( (tmpSiteR == recSiteR) && ((tmpSiteC == recSiteC-1) || (tmpSiteC == recSiteC+1)) ) ||
-															( (tmpSiteC == recSiteC) && ((tmpSiteR == recSiteR-1) || (tmpSiteR == recSiteR+1)))){
+													int absoluteR = recSiteR - tmpSiteR;/* |x| */
+													int absoluteC = recSiteC - tmpSiteC;/* |y| */
+													if(((absoluteR == 1 || absoluteR == -1) || (absoluteC == 1 || absoluteC == -1)) && (absoluteR - absoluteC == 1 || absoluteR - absoluteC == -1)){
 														if(chess[tmpSiteR][tmpSiteC] != null){
-															if(chess[recSiteR][recSiteC].charAt(0) != chess[recSiteR][recSiteC].charAt(0)){
+															if(chess[recSiteR][recSiteC].charAt(0) != chess[tmpSiteR][tmpSiteC].charAt(0)){
 																if(chess[recSiteR][recSiteC].charAt(3) == '7'){
-																	if(chess[recSiteR][recSiteC].charAt(3) == '1' || chess[recSiteR][recSiteC].charAt(3) == '7' /*about chess 7 */)
+																	if(chess[tmpSiteR][tmpSiteC].charAt(3) == '1' || chess[tmpSiteR][tmpSiteC].charAt(3) == '7' /*about chess 7 */)
 																		moveVerify = true;										
 																}else if(chess[recSiteR][recSiteC].charAt(3) == '1' /*about chess 1 */){
-																	if(chess[recSiteR][recSiteC].charAt(3) != '7')
+																	if(chess[tmpSiteR][tmpSiteC].charAt(3) != '7')
 																		moveVerify = true;
-																}else {
-																	if(chess[recSiteR][recSiteC].charAt(3) <= chess[recSiteR][recSiteC].charAt(3)){
-																		moveVerify = true;
-																	}else if(chess[recSiteR][recSiteC].charAt(3) > chess[recSiteR][recSiteC].charAt(3)){
-																		recBt = tmpBt;
-																		recSiteR = tmpSiteR;
-																		recSiteC = tmpSiteC;
+																}else{
+																	if(chess[recSiteR][recSiteC].charAt(3) != '6'){
+																		if(chess[recSiteR][recSiteC].charAt(3) <= chess[tmpSiteR][tmpSiteC].charAt(3)){
+																			moveVerify = true;
+																		}else if(chess[recSiteR][recSiteC].charAt(3) > chess[tmpSiteR][tmpSiteC].charAt(3)){
+																			recBt = tmpBt;
+																			recSiteR = tmpSiteR;
+																			recSiteC = tmpSiteC;
+																		}
 																	}
 																}
 															}
-														}else if( chess[tmpSiteR][tmpSiteC] == null )
+														}else if(chess[tmpSiteR][tmpSiteC] == null)
 															moveVerify = true;
 													}
-												}
-												if(chess[recSiteR][recSiteC].charAt(3) == '6' /*about chess 6 */){
-//													if(recSite/8 != tmpSite/8)
-//														moveVerify = false;
-//													else if(recSite%8 == tmpSite%8)
-//														moveVerify = false;
+													if(chess[recSiteR][recSiteC].charAt(3) == '6' &&
+															chess[tmpSiteR][tmpSiteC] != null &&
+															(chess[recSiteR][recSiteC].charAt(0) != chess[tmpSiteR][tmpSiteC].charAt(0))/*about chess 6 */){
+														if(tmpSiteR == recSiteR){
+															if(recSiteC > tmpSiteC){
+																for(int tempC = recSiteC-1; tempC > tmpSiteC; tempC--){
+																	if(!moveVerify && (chess[recSiteR][tempC] != null))
+																		moveVerify = true;
+																	else if(moveVerify && (chess[recSiteR][tempC] != null)){
+																		moveVerify = false;
+																		break;
+																	}
+																}
+															}else if(recSiteC < tmpSiteC){
+																for(int tempC = recSiteC+1; tempC < tmpSiteC; tempC++){
+																	if(!moveVerify && (chess[recSiteR][tempC] != null))
+																		moveVerify = true;
+																	else if(moveVerify && (chess[recSiteR][tempC] != null)){
+																		moveVerify = false;
+																		break;
+																	}
+																}
+															}
+														}else if(tmpSiteC == recSiteC){
+															if(recSiteR > tmpSiteR){
+																for(int tempR = recSiteR-1; tempR > tmpSiteR; tempR--){
+																	if(!moveVerify && (chess[tempR][recSiteC] != null))
+																		moveVerify = true;
+																	else if(moveVerify && (chess[tempR][recSiteC] != null)){
+																		moveVerify = false;
+																		break;
+																	}
+																}
+															}else if(recSiteR < tmpSiteR){
+																for(int tempR = recSiteC+1; tempR < tmpSiteR; tempR++){
+																	if(!moveVerify && (chess[tempR][recSiteC] != null))
+																		moveVerify = true;
+																	else if(moveVerify && (chess[tempR][recSiteC] != null)){
+																		moveVerify = false;
+																		break;
+																	}
+																}
+															}
+														}
+													}
 												}
 												if(moveVerify){
 													chess[tmpSiteR][tmpSiteC] = chess[recSiteR][recSiteC];
