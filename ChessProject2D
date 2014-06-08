@@ -20,7 +20,7 @@ public class ChessProject extends JApplet {
 	String[] red = new String[16];
 	int[] black_num = { 1, 2, 2, 2, 2, 2, 5 };
 	int[] red_num = { 1, 2, 2, 2, 2, 2, 5 };
-	Boolean firstHand = false, lastHand = false, nextHand = false;
+	Boolean firstHand = false, nextHand = false;
 	String[][] chess = new String[4][8];//chess bj4
 	JButton recBt = null;//上一次按下bt的位置
 	int recSiteR,recSiteC;//recSite==上一次按下bt的Chess位置,R==row,C==Column
