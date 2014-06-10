@@ -132,7 +132,7 @@ public class ChessProject extends JApplet {
 															(chess[recSiteR][recSiteC].charAt(0) != chess[tmpSiteR][tmpSiteC].charAt(0))/*不同色*/){
 														if(tmpSiteR == recSiteR){/*同row*/
 															if(recSiteC > tmpSiteC){/*column 大小判斷*/
-																for(int tempC = recSiteC-1; tempC > tmpSiteC; tempC--){/*往左跑*/
+																for(int tempC = recSiteC-1; tempC > tmpSiteC; tempC--){/*往左移*/
 																	if(!moveVerify && (chess[recSiteR][tempC] != null))/*判斷中間有沒有隔一支棋*/
 																		moveVerify = true;
 																	else if(moveVerify && (chess[recSiteR][tempC] != null)){/*隔兩支以上棋子宣告移動無效*/
