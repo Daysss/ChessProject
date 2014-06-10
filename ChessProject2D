@@ -25,7 +25,6 @@ public class ChessProject extends JApplet {
 	JButton recBt = null;//上一次按下bt的位置
 	int recSiteR,recSiteC;//recSite==上一次按下bt的Chess位置,R==row,C==Column
 	Boolean[][] openVerify=new Boolean[4][8];//Count the chess ever be opened
-	Boolean moveVerify = false;//移動判定
 	public void init() {
 		int width = 400, height = 200;// Size ↓ 50*8,50*4
 		this.setSize(width, height);//大小
@@ -91,6 +90,7 @@ public class ChessProject extends JApplet {
 											tmpBt = null;
 										}
 										if(nextHand){
+											Boolean moveVerify = false;//移動判定
 											if(!openVerify[tmpSiteR][tmpSiteC]){ /*determine chess is cover | 點擊的bt屬於蓋棋未掀開時，將之掀開*/
 												openVerify[tmpSiteR][tmpSiteC]=true;
 												bt[tmpSiteR][tmpSiteC].setIcon(new ImageIcon(chess[tmpSiteR][tmpSiteC] + ".png"));
@@ -103,7 +103,7 @@ public class ChessProject extends JApplet {
 												}else if(recBt != null){/*上一次!=null*/
 													int absoluteR = recSiteR - tmpSiteR;/* |x| */
 													int absoluteC = recSiteC - tmpSiteC;/* |y| */
-													if(((absoluteR == 1 || absoluteR == -1) || (absoluteC == 1 || absoluteC == -1)) && (absoluteR - absoluteC == 1 || absoluteR - absoluteC == -1)){/*上下左右移動判斷*/
+													if(((absoluteR == 1 || absoluteR == -1) || (absoluteC == 1 || absoluteC == -1)) && (absoluteR + absoluteC == 1 || absoluteR + absoluteC == -1)){/*上下左右移動判斷*/
 														if(chess[tmpSiteR][tmpSiteC] != null){/*吃棋*/
 															if(chess[recSiteR][recSiteC].charAt(0) != chess[tmpSiteR][tmpSiteC].charAt(0)){/*不同色*/
 																if(chess[recSiteR][recSiteC].charAt(3) == '7'){/*about chess 7*/
