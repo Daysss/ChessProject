@@ -1,0 +1,222 @@
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.xml.soap.SAAJResult;
+
+public class darkcheese extends JApplet {
+	
+	public JButton[][] bt = new JButton[4][8];// number of darkcheese
+	ImageIcon ic = new ImageIcon("Dark.jpg");// dark image
+	String[] black = new String[16];
+	String[] red = new String[16];
+	int[] black_num = { 1, 2, 2, 2, 2, 2, 5 };
+	int[] red_num = { 1, 2, 2, 2, 2, 2, 5 };
+	Boolean firstHand = false, nextHand = false;
+	String[][] chess = new String[4][8];//chess bj4
+	JButton recBt = null;//上一次按下bt的位置
+	int recSiteR,recSiteC;//recSite==上一次按下bt的Chess位置,R==row,C==Column
+	Boolean[][] openVerify=new Boolean[4][8];//Count the chess ever be opened
+	
+	String[] eatchess = new String[32];
+	int ec = 0;//被吃棋子陣列計數
+	JButton[] eatbtn = new JButton[32];
+	
+	public void init() {
+		int width = 800, height = 400;// Size ↓ 50*8,50*4
+		this.setSize(width, height);//大小
+		setLayout(new GridLayout(3, 1));
+		JPanel jp = new JPanel();
+		jp.setBackground(new Color(249, 219, 165));
+		jp.setLayout(new GridLayout(4, 8));// row 4 colown 8 /*what is "colown" ? column?*/
+		JPanel jp1 = new JPanel();
+		jp1.setLayout(new GridLayout(4, 8));
+		JPanel jp0 = new JPanel();
+		jp0.setLayout(new GridLayout(1, 0));
+		
+		for (int i=0; i<32; i++)	{
+			eatbtn[i] = new JButton("");
+			jp1.add(eatbtn[i]);
+		}
+		for(int i = 0; i < openVerify.length; i++){//Initialize chess's counter ever be opened
+			for(int j = 0; j < openVerify[i].length; j++)
+				openVerify[i][j]=false;
+		}
+		for (int i = 0; i < bt.length; i++) {//排棋子
+			for(int j = 0; j < bt[i].length; j++){
+				if ((int) (Math.random() * 2) == 0) {
+					int check = (int) (Math.random() * 7);
+					if (black_num[check] != 0) {
+						black_num[check] -= 1;
+						chess[i][j] = "b00" + (check + 1);
+					} else
+						j--;
+				} else {
+					int check = (int) (Math.random() * 7);
+					if (red_num[check] != 0) {
+						red_num[check] -= 1;
+						chess[i][j] = "r00" + (check + 1);
+					} else
+						j--;
+				}
+			}
+		}
+		for ( int i = 0; i < bt.length; i++) {//加入Icon
+			for(int j = 0; j < bt[i].length; j++){
+				bt[i][j] = new JButton();
+				bt[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));// 設置邊框
+				bt[i][j].setOpaque(true);
+				bt[i][j].setIcon(ic);
+				//bt[i].setIcon(new ImageIcon(chess[i] + ".png"));
+				//bt add action to listen user's action
+				bt[i][j].addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						JButton tmpBt = (JButton) e.getSource(); //getting press which button
+
+						try{
+							for(int tmpSiteR = 0; tmpSiteR < bt.length; tmpSiteR++){/*for迴圈紀錄按下bt的row*/
+								for(int tmpSiteC = 0; tmpSiteC < bt[tmpSiteR].length; tmpSiteC++){/*for迴圈紀錄按下bt的column*/
+									if(tmpBt == bt[tmpSiteR][tmpSiteC]){
+										nextHand=true;/*是否能執行下一步棋*/
+										/*下列9行註解判斷執棋權*/
+		//								if((chess[tmpSite].charAt(0) == 'b' && !firstHand) || ((chess[tmpSite].charAt(0) == 'b' || !openVerify[tmpSite] ) && lastChess.equals("r"))){
+		//									firstHand = true;
+		//									lastChess = "b";
+		//								}else if((chess[tmpSite].charAt(0) == 'r' && !firstHand) || ((chess[tmpSite].charAt(0) == 'r' || !openVerify[tmpSite] ) && lastChess.equals("b"))){
+		//									firstHand = true;
+		//									lastChess = "r";
+		//								}
+		//								if(firstHand && openVerify[tmpSite] && (chess[tmpSite].charAt(0) == lastChess.charAt(0)))
+		//									nextHand=false;
+										if(chess[recSiteR][recSiteC] == null && chess[tmpSiteR][tmpSiteC] == null){/*例外處理。「當上一次按下bt所代表之chess為null」和「現在這一次按下bt所代表之chess為null」就排除執行下一步並清空紀錄*/
+											nextHand=false;
+											recBt = null;
+											tmpBt = null;
+										}
+										if(nextHand){
+											Boolean moveVerify = false;//移動判定
+											if(!openVerify[tmpSiteR][tmpSiteC]){ /*determine chess is cover | 點擊的bt屬於蓋棋未掀開時，將之掀開*/
+												openVerify[tmpSiteR][tmpSiteC]=true;
+												bt[tmpSiteR][tmpSiteC].setIcon(new ImageIcon(chess[tmpSiteR][tmpSiteC] + ".png"));
+												recBt = null;
+											}else if(openVerify[tmpSiteR][tmpSiteC]){ /*determine chess isn't cover | 點擊的bt屬於蓋棋掀開時，進行移動動作*/
+												if( (recBt == null && chess[tmpSiteR][tmpSiteC] != null) /*transfer chess | 判斷上一次null，但現在!=null轉移移動權*/){
+													recBt = tmpBt; //record last time button
+													recSiteR = tmpSiteR;
+													recSiteC = tmpSiteC;
+												}else if(recBt != null){/*上一次!=null*/
+													int absoluteR = recSiteR - tmpSiteR;/* |x| */
+													int absoluteC = recSiteC - tmpSiteC;/* |y| */
+													if(((absoluteR == 1 || absoluteR == -1) || (absoluteC == 1 || absoluteC == -1)) && (absoluteR + absoluteC == 1 || absoluteR + absoluteC == -1)){/*上下左右移動判斷*/
+														if(chess[tmpSiteR][tmpSiteC] != null){/*吃棋*/
+															if(chess[recSiteR][recSiteC].charAt(0) != chess[tmpSiteR][tmpSiteC].charAt(0)){/*不同色*/
+																if(chess[recSiteR][recSiteC].charAt(3) == '7'){/*about chess 7*/
+																	if(chess[tmpSiteR][tmpSiteC].charAt(3) == '1' || chess[tmpSiteR][tmpSiteC].charAt(3) == '7')
+																		moveVerify = true;										
+																}else if(chess[recSiteR][recSiteC].charAt(3) == '1' /*about chess 1 */){
+																	if(chess[tmpSiteR][tmpSiteC].charAt(3) != '7')
+																		moveVerify = true;
+																}else{
+																	if(chess[recSiteR][recSiteC].charAt(3) != '6'){/*no 炮*/
+																		if(chess[recSiteR][recSiteC].charAt(3) <= chess[tmpSiteR][tmpSiteC].charAt(3)){/*上一次bt編號小於這一次bt*/
+																			moveVerify = true;
+																		}else if(chess[recSiteR][recSiteC].charAt(3) > chess[tmpSiteR][tmpSiteC].charAt(3)){/*上一次bt編號大於這一次bt*/
+																			recBt = tmpBt;
+																			recSiteR = tmpSiteR;
+																			recSiteC = tmpSiteC;
+																		}
+																	}
+																}
+															}
+														}else if(chess[tmpSiteR][tmpSiteC] == null)/*移動*/
+															moveVerify = true;
+													}
+													if((chess[recSiteR][recSiteC].charAt(3) == '6')/*about chess 6 */ &&
+															(chess[tmpSiteR][tmpSiteC] != null)/*現在chess非null*/ &&
+															(chess[recSiteR][recSiteC].charAt(0) != chess[tmpSiteR][tmpSiteC].charAt(0))/*不同色*/){
+														if(tmpSiteR == recSiteR){/*同row*/
+															int check = 0;
+															if(recSiteC > tmpSiteC){/*column 大小判斷*/
+																for(int tempC = recSiteC-1; tempC > tmpSiteC; tempC--){/*往左移*/
+																	if(chess[recSiteR][tempC] != null)
+																		check ++;	
+																}
+															}else if(recSiteC < tmpSiteC){
+																for(int tempC = recSiteC+1; tempC < tmpSiteC; tempC++){/*往右移*/
+																	if(chess[recSiteR][tempC] != null)
+																		check ++;	
+																}
+															}
+															if(check == 1)
+																moveVerify = true;
+														}else if(tmpSiteC == recSiteC){/*同column*/
+															int check = 0;
+															if(recSiteR > tmpSiteR){
+																for(int tempR = recSiteR-1; tempR > tmpSiteR; tempR--){/*往上移*/
+																	if(chess[tempR][tmpSiteC] != null)
+																		check ++;	
+																}
+															}else if(recSiteR < tmpSiteR){
+																for(int tempR = recSiteR+1; tempR < tmpSiteR; tempR++){/*往下移*/
+																	if(chess[tempR][tmpSiteC] != null)
+																		check ++;
+																}
+															}
+															if(check == 1)
+																moveVerify = true;
+														}
+													}
+												}
+												if(moveVerify){/*上面判斷式成立所執行的動作*//*上一步chess移動到現在chess，上一步chess清空為null*/
+													//被吃的棋save一個二維陣列
+												
+													if(chess[tmpSiteR][tmpSiteC] != null){
+														eatchess[ec] = chess[tmpSiteR][tmpSiteC];
+														eatbtn[ec].setIcon(new ImageIcon(eatchess[ec] + ".png"));
+														ec++;
+													}
+												
+													chess[tmpSiteR][tmpSiteC] = chess[recSiteR][recSiteC];
+													chess[recSiteR][recSiteC] = null;
+													bt[tmpSiteR][tmpSiteC].setIcon(new ImageIcon(chess[tmpSiteR][tmpSiteC] + ".png"));
+													bt[recSiteR][recSiteC].setIcon(new ImageIcon(chess[recSiteR][recSiteC] + ".png"));
+													recBt = null;
+													moveVerify = false;
+												}else if(!moveVerify){/*不成立，把上一步轉換成現在這一步*/
+													recBt = tmpBt;
+													recSiteR = tmpSiteR;
+													recSiteC = tmpSiteC;
+												}
+												
+												
+											}
+										}
+									}
+								}
+							}
+						}catch(Exception ex){
+							//e.printStackTrace();
+						}
+					}
+				});
+				jp.add(bt[i][j]);			
+			}
+		}
+		for(int i = 0;i<eatchess.length ;i++)
+			jp1.add(eatbtn[i]);
+		this.add(jp);
+		this.add(jp0);
+		this.add(jp1);
+	}
+}
